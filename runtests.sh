@@ -3,7 +3,7 @@
 set -e
 set -x
 
-COVERAGE_THRESHOLD=50
+COVERAGE_THRESHOLD=90
 
 
 echo "Create Virtualenv for Python deps ..."
@@ -29,9 +29,7 @@ function prepare_venv() {
 
 [ "$NOVENV" == "1" ] || prepare_venv || exit 1
 
-$(which pip3) install pytest
 $(which pip3) install pytest-cov
 
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=$(pwd) python3 "$(which pytest)" --cov=. --cov-config .coveragerc --cov-report term-missing --cov-fail-under=$COVERAGE_THRESHOLD -vv tests/
 printf "%stests passed%s\n\n" "${GREEN}" "${NORMAL}"
-
