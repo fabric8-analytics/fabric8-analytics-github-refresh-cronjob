@@ -1,6 +1,6 @@
 #!/bin/bash
 
-directories=""
+directories="tests"
 separate_files="github_refresh.py"
 
 pass=0
