@@ -1,0 +1,143 @@
+apiVersion: v1
+kind: Template
+labels:
+  template: f8a-github-refresh-cronjob
+metadata:
+  name: f8a-github-refresh-cronjob
+  annotations:
+    description: f8a-github-refresh-cronjob
+objects:
+- apiVersion:  batch/v1beta1
+  kind: CronJob
+  metadata:
+    name: f8a-github-refresh-cronjob
+    annotations:
+      description: f8a-github-refresh-cronjob
+  spec:
+    successfulJobsHistoryLimit: 2
+    failedJobsHistoryLimit: 2
+    schedule: "${CRON_SCHEDULE}"
+    jobTemplate:
+      spec:
+        template:
+          spec:
+            restartPolicy: Never
+            containers:
+            - name: f8a-github-refresh-cronjob
+              image: "${DOCKER_REGISTRY}/${DOCKER_IMAGE}:${IMAGE_TAG}"
+              env:
+                - name: DEPLOYMENT_PREFIX
+                  valueFrom:
+                    configMapKeyRef:
+                      name: bayesian-config
+                      key: deployment-prefix
+                - name: WORKER_ADMINISTRATION_REGION
+                  value: "ingestion"
+                - name: REFRESH_INTERVAL
+                  value: "${REFRESH_INTERVAL}"
+                - name: DRY_RUN
+                  value: "${DRY_RUN}"
+                - name: POSTGRESQL_HOST
+                  valueFrom:
+                    secretKeyRef:
+                      name: coreapi-postgres
+                      key: host
+                - name: POSTGRESQL_PORT
+                  valueFrom:
+                    secretKeyRef:
+                      name: coreapi-postgres
+                      key: port
+                - name: POSTGRESQL_DATABASE
+                  valueFrom:
+                    secretKeyRef:
+                      name: coreapi-postgres
+                      key: database
+                - name: POSTGRESQL_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: coreapi-postgres
+                      key: password
+                - name: POSTGRESQL_USER
+                  valueFrom:
+                    secretKeyRef:
+                      name: coreapi-postgres
+                      key: username
+                - name: AWS_SQS_ACCESS_KEY_ID
+                  valueFrom:
+                    secretKeyRef:
+                      name: aws
+                      key: sqs-access-key-id
+                - name: AWS_SQS_SECRET_ACCESS_KEY
+                  valueFrom:
+                    secretKeyRef:
+                      name: aws
+                      key: sqs-secret-access-key
+                - name: PGBOUNCER_SERVICE_HOST
+                  value: bayesian-pgbouncer
+              resources:
+                requests:
+                  memory: ${MEMORY_REQUEST}
+                  cpu: ${CPU_REQUEST}
+                limits:
+                  memory: ${MEMORY_LIMIT}
+                  cpu: ${CPU_LIMIT}
+parameters:
+- description: Docker registry
+  displayName: Docker registry
+  required: true
+  name: DOCKER_REGISTRY
+  value: "quay.io"
+
+- description: Docker image
+  displayName: Docker image
+  required: true
+  name: DOCKER_IMAGE
+  value: "openshiftio/fabric8-analytics-github-refresh-cronjob"
+
+- description: Image tag
+  displayName: Image tag
+  required: true
+  name: IMAGE_TAG
+  value: "latest"
+
+- description: Refresh interval
+  displayName: Refresh interval
+  required: true
+  name: REFRESH_INTERVAL
+  value: "14"
+
+- description: Dry run
+  displayName: Dry run
+  required: true
+  name: DRY_RUN
+  value: "false"
+
+- description: Schedule
+  displayName: Schedule
+  required: true
+  name: CRON_SCHEDULE
+  value: "0 */12 * * *"
+
+- description: CPU request
+  displayName: CPU request
+  required: true
+  name: CPU_REQUEST
+  value: "250m"
+
+- description: CPU limit
+  displayName: CPU limit
+  required: true
+  name: CPU_LIMIT
+  value: "500m"
+
+- description: Memory request
+  displayName: Memory request
+  required: true
+  name: MEMORY_REQUEST
+  value: "256Mi"
+
+- description: Memory limit
+  displayName: Memory limit
+  required: true
+  name: MEMORY_LIMIT
+  value: "1536Mi"
