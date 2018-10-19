@@ -19,6 +19,6 @@ def test_run(mocker, db_results):
         'bayesianPackageFlow',
         TASK_NAMES,
         {'ecosystem': 'maven', 'package': 'net.iharder:base64', 'force': True},
-        False,
+        True,
         False
     )
