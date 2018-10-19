@@ -47,7 +47,7 @@ def refresh(ecosystem, package, url):
     }
 
     if not is_dry_run():
-        run_flow_selective('bayesianPackageFlow', TASK_NAMES, node_args, False, False)
+        run_flow_selective('bayesianPackageFlow', TASK_NAMES, node_args, True, False)
 
 
 def run(db):
