@@ -16,6 +16,7 @@ objects:
   spec:
     successfulJobsHistoryLimit: 2
     failedJobsHistoryLimit: 2
+    concurrencyPolicy: "Forbid"
     schedule: "${CRON_SCHEDULE}"
     jobTemplate:
       spec:
