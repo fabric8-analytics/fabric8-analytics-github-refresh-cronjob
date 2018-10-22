@@ -10,7 +10,7 @@ from datetime import datetime, timedelta
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from f8a_worker.models import Upstream, Package, Ecosystem
-from f8a_worker.setup_celery import init_selinon
+from f8a_worker.setup_celery import init_celery, init_selinon
 
 
 logger = logging.getLogger('github_refresh')
@@ -62,8 +62,7 @@ def run(db):
 
 def get_expiration_date():
     """Get expiration date after which GitHub data are considered outdated."""
-    interval = REFRESH_INTERVAL
-    return datetime.utcnow() - timedelta(days=interval)
+    return datetime.utcnow() - timedelta(days=REFRESH_INTERVAL)
 
 
 def get_limit(db):
@@ -89,5 +88,6 @@ def _get_outdated(db, limit):
 
 
 if __name__ == '__main__':
+    init_celery()
     init_selinon()
     run(sessionmaker(bind=create_engine(CONN_STR))())
