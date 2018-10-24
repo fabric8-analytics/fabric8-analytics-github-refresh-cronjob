@@ -14,6 +14,7 @@ from f8a_worker.setup_celery import init_celery, init_selinon
 
 
 logger = logging.getLogger('github_refresh')
+logger.setLevel(logging.INFO)
 
 
 CONN_STR = "postgresql://{user}:{password}@{host}:{port}/{db}".format(
