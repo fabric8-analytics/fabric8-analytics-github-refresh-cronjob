@@ -28,11 +28,11 @@ CONN_STR = "postgresql://{user}:{password}@{host}:{port}/{db}".format(
 REFRESH_INTERVAL = int(os.environ.get('REFRESH_INTERVAL', 14))
 
 TASK_NAMES = [
-        'github_details',
-        'PackageFinalizeTask',
-        'PackageResultCollector',
-        'PackageGraphImporterTask'
-    ]
+    'github_details',
+    'PackageFinalizeTask',
+    'PackageResultCollector',
+    'PackageGraphImporterTask'
+]
 
 
 def refresh(ecosystem, package, url):
