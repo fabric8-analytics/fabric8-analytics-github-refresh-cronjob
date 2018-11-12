@@ -13,8 +13,14 @@ from f8a_worker.models import Upstream, Package, Ecosystem
 from f8a_worker.setup_celery import init_celery, init_selinon
 
 
-logging.basicConfig(format='%(asctime)s %(levelname)s:%(message)s', level=logging.INFO)
 logger = logging.getLogger('github_refresh')
+_handler = logging.StreamHandler()
+_handler.setLevel(logging.INFO)
+_formatter = logging.Formatter('%(asctime)s %(levelname)s:%(message)s')
+_handler.setFormatter(_formatter)
+logger.addHandler(_handler)
+logger.setLevel(logging.DEBUG)
+logger.propagate = False
 
 
 CONN_STR = "postgresql://{user}:{password}@{host}:{port}/{db}".format(
