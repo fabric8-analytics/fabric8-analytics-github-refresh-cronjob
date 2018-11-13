@@ -60,6 +60,7 @@ def refresh(ecosystem, package, url):
 def run(db):
     """Run the script."""
     limit = get_limit(db)
+    logger.info('Refreshing GitHub data for up to {limit} projects'.format(limit=limit))
     if limit:
         results = _get_outdated(db, limit)
         logger.info('Refreshing GitHub data for {n} projects'.format(n=len(results)))
