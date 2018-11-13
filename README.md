@@ -11,4 +11,3 @@ Following environment variables can be used to control behaviour of the cron job
 
 `DRY_RUN` - don't actually schedule analyses
 
-
