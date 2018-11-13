@@ -66,6 +66,7 @@ def run(db):
         logger.info('Refreshing GitHub data for {n} projects'.format(n=len(results)))
         for result in results:
             refresh(result.package.ecosystem.name, result.package.name, result.url)
+    logger.info('Done!')
 
 
 def get_expiration_date():
