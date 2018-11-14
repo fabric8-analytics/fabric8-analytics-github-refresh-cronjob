@@ -49,7 +49,7 @@ def refresh(ecosystem, package, url):
 
     node_args = {
         'ecosystem': ecosystem,
-        'package': package,
+        'name': package,
         'force': True
     }
 
