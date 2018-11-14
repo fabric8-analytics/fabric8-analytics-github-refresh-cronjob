@@ -18,7 +18,7 @@ def test_run(mocker, db_results):
     schedule_refresh_mock.assert_called_once_with(
         'bayesianPackageFlow',
         TASK_NAMES,
-        {'ecosystem': 'maven', 'package': 'net.iharder:base64', 'force': True},
+        {'ecosystem': 'maven', 'name': 'net.iharder:base64', 'force': True},
         True,
         False
     )
