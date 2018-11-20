@@ -32,4 +32,5 @@ function prepare_venv() {
 $(which pip3) install pytest-cov
 
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=$(pwd) python3 "$(which pytest)" --cov=. --cov-config .coveragerc --cov-report term-missing --cov-fail-under=$COVERAGE_THRESHOLD -vv tests/
+codecov --token=c7d85992-337d-48b1-abb4-e55429b3e9c9
 printf "%stests passed%s\n\n" "${GREEN}" "${NORMAL}"
