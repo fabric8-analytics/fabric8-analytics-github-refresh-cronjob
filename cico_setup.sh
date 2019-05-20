@@ -31,7 +31,7 @@ docker_login() {
 prep() {
     yum -y update
     yum -y install epel-release
-    yum -y install git which python34-pip python34-devel python34-virtualenv docker gcc
+    yum -y install git which python36-pip python36-devel python36-virtualenv docker gcc
     systemctl start docker
 }
 

@@ -1,7 +1,7 @@
 FROM registry.centos.org/centos/centos:7
 
 RUN yum install -y epel-release &&\
-    yum install -y git python34-pip python34-devel &&\
+    yum install -y git python36-pip python36-devel &&\
     yum clean all
 
 ENV APP_DIR=/github_refresh
