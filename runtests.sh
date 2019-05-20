@@ -5,6 +5,10 @@ set -x
 
 COVERAGE_THRESHOLD=90
 
+check_python_version() {
+    python3 tools/check_python_version.py 3 6
+}
+
 
 echo "Create Virtualenv for Python deps ..."
 function prepare_venv() {
@@ -28,6 +32,8 @@ function prepare_venv() {
 }
 
 [ "$NOVENV" == "1" ] || prepare_venv || exit 1
+
+check_python_version
 
 $(which pip3) install pytest-cov
 
