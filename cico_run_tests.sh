@@ -4,7 +4,7 @@ set -ex
 
 . cico_setup.sh
 
-./runtests.sh
+./qa/runtests.sh
 
 build_image
 
