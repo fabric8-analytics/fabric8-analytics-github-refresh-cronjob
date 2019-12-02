@@ -7,7 +7,7 @@ pushd "${SCRIPT_DIR}/.." > /dev/null
 set -e
 set -x
 
-COVERAGE_THRESHOLD=90
+COVERAGE_THRESHOLD=80
 
 check_python_version() {
     python3 tools/check_python_version.py 3 6
@@ -32,9 +32,8 @@ function prepare_venv() {
         printf "%sOK%s\n" "${GREEN}" "${NORMAL}" >&2
 
         ${PYTHON} -m venv "venv" && source venv/bin/activate
-        pip install -U pip
-        python3 "$(which pip3)" install -r requirements.txt
-        python3 "$(which pip3)" install -r tests/requirements.txt
+        pip3 install -r requirements.txt
+        pip3 install -r tests/requirements.txt
 
 }
 
@@ -44,7 +43,7 @@ check_python_version
 
 $(which pip3) install pytest-cov
 
-PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=$(pwd) python3 "$(which pytest)" --cov=. --cov-config .coveragerc --cov-report term-missing --cov-fail-under=$COVERAGE_THRESHOLD -vv tests/
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=$(pwd) python3 "$(which pytest)" --cov=./src --cov-config .coveragerc --cov-report term-missing --cov-fail-under=$COVERAGE_THRESHOLD -vv tests/
 codecov --token=c7d85992-337d-48b1-abb4-e55429b3e9c9
 printf "%stests passed%s\n\n" "${GREEN}" "${NORMAL}"
 

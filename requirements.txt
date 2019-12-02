@@ -1,2 +1,1 @@
-sqlalchemy
-git+https://git@github.com/fabric8-analytics/fabric8-analytics-worker.git@eb4dd44#egg=f8a_worker
+git+https://git@github.com/fabric8-analytics/fabric8-analytics-worker.git@ca7d91f#egg=f8a_worker
