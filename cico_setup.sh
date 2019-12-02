@@ -31,7 +31,8 @@ docker_login() {
 prep() {
     yum -y update
     yum -y install epel-release
-    yum -y install git which python36-pip python36-devel python36-virtualenv docker gcc
+    yum -y install git which python36-pip python36-devel docker gcc openssl-devel httpd-devel
+    pip3 install virtualenv pytest
     systemctl start docker
 }
 
