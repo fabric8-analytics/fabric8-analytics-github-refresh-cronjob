@@ -48,6 +48,7 @@ def test_get_epv_list(mocker):
 @mock.patch("src.github_refresh.get_epv_list")
 @mock.patch("src.github_refresh.schedule_gh_refresh")
 def test_run(m1, m2, m3, m4):
+    """Test run function."""
     m1.return_value = ""
     m2.return_value = ""
     m3.return_value = ""
