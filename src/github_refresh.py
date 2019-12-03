@@ -79,7 +79,8 @@ def schedule_gh_refresh(epv_list):
     """Schedule GH refresh job to update stats."""
     for node in epv_list:
         node['force'] = True
-        logger.info("Starting bayesianPackageFlow for {e} {n}".format(e=node['ecosystem'], n=node['name']))
+        logger.info("Starting bayesianPackageFlow for {e} {n}".format(e=node['ecosystem'],
+                                                                      n=node['name']))
         refresh(node)
     return True
 
