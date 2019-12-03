@@ -7,7 +7,7 @@ pushd "${SCRIPT_DIR}/.." > /dev/null
 set -e
 set -x
 
-COVERAGE_THRESHOLD=80
+COVERAGE_THRESHOLD=90
 
 check_python_version() {
     python3 tools/check_python_version.py 3 6

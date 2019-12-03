@@ -22,11 +22,6 @@ def test_schedule_gh_refresh(mocker):
 
 def test_get_epv_list(mocker):
     """Test get_epv_list function."""
-    gh._REGION = "us-east1"
-    gh._ACCESS_KEY = "abcd"
-    gh._ACCESS_KEY_ID = "avcd"
-    gh._PREFIX = "dev"
-    gh._BUCKET = "awsbucket"
     mock = mocker.patch('src.github_refresh.retrieve_dict')
     mock.return_value = {
         'stacks_summary': {
@@ -38,6 +33,16 @@ def test_get_epv_list(mocker):
             }
         }
     }
+
+    res = get_epv_list()
+    assert len(res) == 0
+
+    gh._REGION = "us-east1"
+    gh._ACCESS_KEY = "abcd"
+    gh._ACCESS_KEY_ID = "avcd"
+    gh._PREFIX = "dev"
+    gh._BUCKET = "awsbucket"
+
     res = get_epv_list()
     assert len(res) == 2
     assert res[0]['ecosystem'] == 'npm'

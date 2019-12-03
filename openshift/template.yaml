@@ -54,15 +54,15 @@ objects:
                       key: bucket
                 - name: WORKER_ADMINISTRATION_REGION
                   value: "ingestion"
-                - name: REFRESH_INTERVAL
-                  value: "${REFRESH_INTERVAL}"
                 - name: DRY_RUN
                   value: "${DRY_RUN}"
-                - name: POSTGRESQL_HOST
-                  valueFrom:
-                    secretKeyRef:
-                      name: coreapi-postgres
-                      key: host
+              resources:
+                requests:
+                  memory: ${MEMORY_REQUEST}
+                  cpu: ${CPU_REQUEST}
+                limits:
+                  memory: ${MEMORY_LIMIT}
+                  cpu: ${CPU_LIMIT}
 parameters:
 - description: Docker registry
   displayName: Docker registry
