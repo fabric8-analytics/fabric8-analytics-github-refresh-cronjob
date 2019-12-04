@@ -56,6 +56,37 @@ objects:
                   value: "ingestion"
                 - name: DRY_RUN
                   value: "${DRY_RUN}"
+                - name: REPORT_TIME_DELTA
+                  value: "0"
+                - name: PGBOUNCER_SERVICE_HOST
+                  value: bayesian-pgbouncer
+                - name: PGBOUNCER_SERVICE_PORT
+                  value: "5432"
+                - name: POSTGRESQL_DATABASE
+                  valueFrom:
+                    secretKeyRef:
+                      name: coreapi-postgres
+                      key: database
+                - name: POSTGRESQL_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: coreapi-postgres
+                      key: password
+                - name: POSTGRESQL_USER
+                  valueFrom:
+                    secretKeyRef:
+                      name: coreapi-postgres
+                      key: username
+                - name: AWS_SQS_ACCESS_KEY_ID
+                  valueFrom:
+                    secretKeyRef:
+                      name: aws
+                      key: sqs-access-key-id
+                - name: AWS_SQS_SECRET_ACCESS_KEY
+                  valueFrom:
+                    secretKeyRef:
+                      name: aws
+                      key: sqs-secret-access-key
               resources:
                 requests:
                   memory: ${MEMORY_REQUEST}

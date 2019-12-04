@@ -1,6 +1,7 @@
 """Test github_refresh.py script."""
 
-from src.github_refresh import schedule_gh_refresh, get_epv_list, run
+from src.github_refresh import schedule_gh_refresh, \
+    get_epv_list, run, retrieve_dict, refresh, retrieve_blob
 from src import github_refresh as gh
 from unittest import mock
 
@@ -18,6 +19,12 @@ def test_schedule_gh_refresh(mocker):
 
     res = schedule_gh_refresh(epv_list)
     assert res is True
+
+
+def test_retrieve_blob():
+    """Test retrieve_blob function."""
+    res = retrieve_blob("abc")
+    assert res is None
 
 
 def test_get_epv_list(mocker):
@@ -46,6 +53,31 @@ def test_get_epv_list(mocker):
     res = get_epv_list()
     assert len(res) == 2
     assert res[0]['ecosystem'] == 'npm'
+
+
+def test_retrieve_dict(mocker):
+    """Test retrieve_dict."""
+    mock = mocker.patch('src.github_refresh.retrieve_blob')
+    mock.return_value = None
+    res = retrieve_dict("abc")
+    assert res is None
+
+    mock.return_value = "{\"a\": \"b\"}".encode()
+    res = retrieve_dict("abc")
+    assert res['a'] == 'b'
+
+
+def test_refresh(mocker):
+    """Test refresh function."""
+    mock = mocker.patch('src.github_refresh.run_flow_selective')
+    mock.return_value = ""
+    node = {
+        "ecosystem": "npm",
+        "name": "lodash",
+        "force": True
+    }
+    res = refresh(node)
+    assert res is None
 
 
 @mock.patch("src.github_refresh.init_celery")
