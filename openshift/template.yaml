@@ -80,13 +80,15 @@ objects:
                 - name: AWS_SQS_ACCESS_KEY_ID
                   valueFrom:
                     secretKeyRef:
-                      name: aws
-                      key: sqs-access-key-id
+                      name: aws-sqs
+                      key: aws_access_key_id
                 - name: AWS_SQS_SECRET_ACCESS_KEY
                   valueFrom:
                     secretKeyRef:
-                      name: aws
-                      key: sqs-secret-access-key
+                      name: aws-sqs
+                      key: aws_secret_access_key
+                - name: REFRESH_INTERVAL
+                  value: 0
               resources:
                 requests:
                   memory: ${MEMORY_REQUEST}
