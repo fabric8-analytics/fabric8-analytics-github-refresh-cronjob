@@ -19,6 +19,7 @@ _ACCESS_KEY = os.environ.get('AWS_S3_SECRET_ACCESS_KEY', None)
 _PREFIX = os.environ.get('DEPLOYMENT_PREFIX', 'dev')
 _BUCKET = os.environ.get('REPORT_BUCKET_NAME', None)
 _TIME_DELTA = int(os.environ.get('REPORT_TIME_DELTA', 0))
+_DRY_RUN = os.environ.get('DRY_RUN', False)
 
 TASK_NAMES = [
     'github_details',
@@ -94,7 +95,10 @@ def schedule_gh_refresh(epv_list):
         node['force'] = True
         logger.info("Starting bayesianPackageFlow for {e} {n}".format(e=node['ecosystem'],
                                                                       n=node['name']))
-        refresh(node)
+        if not _DRY_RUN:
+            refresh(node)
+        else:
+            logger.info("DRY RUN MODE ON..Flow not initiated.")
     return True
 
 
