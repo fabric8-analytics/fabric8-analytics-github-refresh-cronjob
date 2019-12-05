@@ -88,7 +88,7 @@ objects:
                       name: aws-sqs
                       key: aws_secret_access_key
                 - name: REFRESH_INTERVAL
-                  value: 0
+                  value: "0"
               resources:
                 requests:
                   memory: ${MEMORY_REQUEST}
