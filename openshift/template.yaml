@@ -119,7 +119,7 @@ parameters:
   displayName: Dry run
   required: true
   name: DRY_RUN
-  value: "false"
+  value: "0"
 
 - description: Schedule
   displayName: Schedule

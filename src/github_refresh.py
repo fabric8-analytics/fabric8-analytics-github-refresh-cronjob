@@ -19,7 +19,7 @@ _ACCESS_KEY = os.environ.get('AWS_S3_SECRET_ACCESS_KEY', None)
 _PREFIX = os.environ.get('DEPLOYMENT_PREFIX', 'dev')
 _BUCKET = os.environ.get('REPORT_BUCKET_NAME', None)
 _TIME_DELTA = int(os.environ.get('REPORT_TIME_DELTA', 0))
-_DRY_RUN = os.environ.get('DRY_RUN', False)
+_DRY_RUN = int(os.environ.get('DRY_RUN', 0))
 
 TASK_NAMES = [
     'github_details',
