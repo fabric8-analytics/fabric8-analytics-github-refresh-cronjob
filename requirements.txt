@@ -1,3 +1,4 @@
-git+https://git@github.com/fabric8-analytics/fabric8-analytics-worker.git@ca7d91f#egg=f8a_worker
-git+https://github.com/fabric8-analytics/fabric8-analytics-utils.git@3bca34e
+selinon==1.0.0
+git+https://git@github.com/fabric8-analytics/fabric8-analytics-worker.git@fdc0435#egg=f8a_worker
+git+https://github.com/fabric8-analytics/fabric8-analytics-utils.git@1f45e6f
 git+https://git@github.com/fabric8-analytics/fabric8-analytics-version-comparator.git#egg=f8a_version_comparator
