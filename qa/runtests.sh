@@ -16,22 +16,21 @@ check_python_version() {
 
 echo "Create Virtualenv for Python deps ..."
 function prepare_venv() {
-        # we want tests to run on python3.6
-        printf 'checking alias `python3.6` ... ' >&2
-        PYTHON=$(which python3.6 2> /dev/null)
-        if [ "$?" -ne "0" ]; then
-                printf "%sNOT FOUND%s\n" "${YELLOW}" "${NORMAL}" >&2
+        VIRTUALENV=$(which virtualenv)
+        if [ $? -eq 1 ]
+        then
+            # python36 which is in CentOS does not have virtualenv binary
+            VIRTUALENV=$(which virtualenv-3)
+        fi
 
-                printf 'checking alias `python3` ... ' >&2
-                PYTHON=$(which python3 2> /dev/null)
-
-                let ec=$?
-                [ "$ec" -ne "0" ] && printf "${RED} NOT FOUND ${NORMAL}\n" && return $ec
+        ${VIRTUALENV} -p python3 venv && source venv/bin/activate
+        if [ $? -ne 0 ]
+        then
+            printf "%sPython virtual environment can't be initialized%s" "${RED}" "${NORMAL}"
+            exit 1
         fi
 
         printf "%sOK%s\n" "${GREEN}" "${NORMAL}" >&2
-
-        ${PYTHON} -m venv "venv" && source venv/bin/activate
         pip3 install -r requirements.txt
         pip3 install -r tests/requirements.txt
 
