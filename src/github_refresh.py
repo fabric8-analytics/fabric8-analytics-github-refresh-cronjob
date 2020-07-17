@@ -60,7 +60,11 @@ def retrieve_blob(object_key):
 
 def get_epv_list():
     """Fetch the epvs from the daily stack report."""
-    epv_list = []
+    epv_list = {
+        "maven": [],
+        "pypi": [],
+        "npm": []
+    }
     if not all([_ACCESS_KEY_ID, _ACCESS_KEY, _REGION, _PREFIX, _BUCKET]):
         logger.info("AWS credentials or S3 configuration was "
                     "not provided correctly. Please set the AWS_S3_REGION, "
@@ -78,27 +82,46 @@ def get_epv_list():
             if bool(dep_list):
                 for k in dep_list:
                     name = k.split(" ")[0]
-                    epv_list.append({
-                        "ecosystem": eco,
-                        "name": name
-                    })
+                    epv_list[eco].append(name)
             else:
                 logger.info("No deps found in the report for the ecosystem {}".format(eco))
+
+    logger.info("Fetching venus V2 stack report for the date {}".format(yest_date))
+    v2_stack_json = retrieve_dict("v2/daily/" + yest_date + ".json")
+    if v2_stack_json:
+        for eco in eco_list:
+            dep_list = v2_stack_json.get('stacks_summary', {}).get(eco, {}) \
+                .get('unique_dependencies_with_frequency', {})
+            if bool(dep_list):
+                for k in dep_list:
+                    name = k.split(" ")[0]
+                    epv_list[eco].append(name)
+            else:
+                logger.info("No deps found in the report for the ecosystem {}".format(eco))
+    epv_list = {
+        "maven": list(set(epv_list['maven'])),
+        "pypi": list(set(epv_list['pypi'])),
+        "npm": list(set(epv_list['npm']))
+    }
     logger.info("The EPVs for GH refresh --> {}".format(epv_list))
-    logger.info("Total number of EPVs {}".format(len(epv_list)))
     return epv_list
 
 
 def schedule_gh_refresh(epv_list):
     """Schedule GH refresh job to update stats."""
-    for node in epv_list:
-        node['force'] = True
-        logger.info("Starting bayesianPackageFlow for {e} {n}".format(e=node['ecosystem'],
-                                                                      n=node['name']))
-        if not _DRY_RUN:
-            refresh(node)
-        else:
-            logger.info("DRY RUN MODE ON..Flow not initiated.")
+    for eco in eco_list:
+        for pkg in epv_list[eco]:
+            node = {
+                'ecosystem': eco,
+                'name': pkg,
+                'force': True
+            }
+            logger.info("Starting bayesianPackageFlow for {e} {n}".format(e=eco,
+                                                                          n=pkg))
+            if not _DRY_RUN:
+                refresh(node)
+            else:
+                logger.info("DRY RUN MODE ON..Flow not initiated.")
     return True
 
 
