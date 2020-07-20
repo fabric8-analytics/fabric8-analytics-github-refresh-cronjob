@@ -73,18 +73,6 @@ def get_epv_list():
         return epv_list
     cur_date = datetime.today()
     yest_date = (cur_date - timedelta(days=_TIME_DELTA)).strftime("%Y-%m-%d")
-    logger.info("Fetching venus stack report for the date {}".format(yest_date))
-    stack_json = retrieve_dict("daily/" + yest_date + ".json")
-    if stack_json:
-        for eco in eco_list:
-            dep_list = stack_json.get('stacks_summary', {}).get(eco, {}) \
-                .get('unique_dependencies_with_frequency', {})
-            if bool(dep_list):
-                for k in dep_list:
-                    name = k.split(" ")[0]
-                    epv_list[eco].append(name)
-            else:
-                logger.info("No deps found in the report for the ecosystem {}".format(eco))
 
     logger.info("Fetching venus V2 stack report for the date {}".format(yest_date))
     v2_stack_json = retrieve_dict("v2/daily/" + yest_date + ".json")
@@ -98,11 +86,6 @@ def get_epv_list():
                     epv_list[eco].append(name)
             else:
                 logger.info("No deps found in the report for the ecosystem {}".format(eco))
-    epv_list = {
-        "maven": list(set(epv_list['maven'])),
-        "pypi": list(set(epv_list['pypi'])),
-        "npm": list(set(epv_list['npm']))
-    }
     logger.info("The EPVs for GH refresh --> {}".format(epv_list))
     return epv_list
 
