@@ -8,12 +8,11 @@ from unittest import mock
 
 def test_schedule_gh_refresh(mocker):
     """Test schedule_gh_refresh function."""
-    epv_list = [
-        {
-            "ecosystem": "maven",
-            "name": "io.vertx-vertx-web"
-        }
-    ]
+    epv_list = {
+        "maven": ["io.vertx-vertx-web"],
+        "npm": ["lodash"],
+        "pypi": ["requests"]
+    }
     count_mock = mocker.patch('src.github_refresh.refresh')
     count_mock.return_value = 1
 
@@ -42,7 +41,8 @@ def test_get_epv_list(mocker):
     }
 
     res = get_epv_list()
-    assert len(res) == 0
+    assert len(res) == 3
+    assert len(res['npm']) == 0
 
     gh._REGION = "us-east1"
     gh._ACCESS_KEY = "abcd"
@@ -51,8 +51,8 @@ def test_get_epv_list(mocker):
     gh._BUCKET = "awsbucket"
 
     res = get_epv_list()
-    assert len(res) == 2
-    assert res[0]['ecosystem'] == 'npm'
+    assert len(res) == 3
+    assert len(res['npm']) == 2
 
 
 def test_retrieve_dict(mocker):
