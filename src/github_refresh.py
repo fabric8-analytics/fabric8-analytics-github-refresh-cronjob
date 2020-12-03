@@ -4,14 +4,11 @@
 
 import os
 import logging
-from selinon import run_flow_selective
 from datetime import datetime, timedelta
-from f8a_worker.setup_celery import init_celery, init_selinon
-
 import botocore
 import boto3
 import json
-
+from requests_futures.sessions import FuturesSession
 
 _REGION = os.environ.get('AWS_S3_REGION', 'us-east-1')
 _ACCESS_KEY_ID = os.environ.get('AWS_S3_ACCESS_KEY_ID', None)
@@ -20,6 +17,12 @@ _PREFIX = os.environ.get('DEPLOYMENT_PREFIX', 'dev')
 _BUCKET = os.environ.get('REPORT_BUCKET_NAME', None)
 _TIME_DELTA = int(os.environ.get('REPORT_TIME_DELTA', 0))
 _DRY_RUN = int(os.environ.get('DRY_RUN', 0))
+_APP_SECRET_KEY = os.getenv('APP_SECRET_KEY', 'not-set')
+
+_INGESTION_API_URL = "http://{host}:{port}/{endpoint}".format(
+    host=os.environ.get("INGESTION_SERVICE_HOST", "bayesian-jobs"),
+    port=os.environ.get("INGESTION_SERVICE_PORT", "34000"),
+    endpoint='ingestions/epv-selective')
 
 TASK_NAMES = [
     'github_details',
@@ -28,14 +31,20 @@ TASK_NAMES = [
     'PackageGraphImporterTask'
 ]
 
+GO_TASK_NAMES = [
+    "NewGithubDetails",
+    "NewPackageAnalysisGraphImporterTask"
+]
+
 session = boto3.session.Session(
     aws_access_key_id=_ACCESS_KEY_ID,
     aws_secret_access_key=_ACCESS_KEY,
     region_name=_REGION)
 s3_resource = session.resource('s3', config=botocore.client.Config(signature_version='s3v4'))
-eco_list = ['npm', 'maven', 'pypi']
+eco_list = ['npm', 'maven', 'pypi', 'golang']
 logger = logging.getLogger(__file__)
 logging.basicConfig(level=logging.INFO)
+_session = FuturesSession()
 
 
 def retrieve_dict(object_key):
@@ -63,7 +72,8 @@ def get_epv_list():
     epv_list = {
         "maven": [],
         "pypi": [],
-        "npm": []
+        "npm": [],
+        "golang": []
     }
     if not all([_ACCESS_KEY_ID, _ACCESS_KEY, _REGION, _PREFIX, _BUCKET]):
         logger.info("AWS credentials or S3 configuration was "
@@ -93,33 +103,37 @@ def get_epv_list():
 def schedule_gh_refresh(epv_list):
     """Schedule GH refresh job to update stats."""
     for eco in eco_list:
+        # Prepare payload for Ingestion API
+        payload = {
+            "ecosystem": eco,
+            "packages": [],
+            "flow_name": "bayesianPackageFlow",
+            "task_names": TASK_NAMES,
+            "follow_subflows": True
+        }
+
+        # Update flow name and task names for Golang.
+        if eco is 'golang':
+            payload["flow_name"] = "newPackageAnalysisFlow"
+            payload["task_names"] = GO_TASK_NAMES
+
         for pkg in epv_list[eco]:
-            node = {
-                'ecosystem': eco,
-                'name': pkg,
-                'force': True
-            }
-            logger.info("Starting bayesianPackageFlow for {e} {n}".format(e=eco,
-                                                                          n=pkg))
-            if not _DRY_RUN:
-                refresh(node)
-            else:
-                logger.info("DRY RUN MODE ON..Flow not initiated.")
+            payload['packages'].append({'package': pkg})
+
+        if not _DRY_RUN and payload['packages']:
+            _session.post(url=_INGESTION_API_URL,
+                          json=payload,
+                          headers={'auth_token': _APP_SECRET_KEY})
+            logger.info("Flow is initiated for payload: {}".format(payload))
+        else:
+            logger.info("DRY RUN MODE ON..Flow not initiated.")
     return True
-
-
-def refresh(node_args):
-    """Schedule refresh of GitHub data for given package."""
-    run_flow_selective('bayesianPackageFlow', TASK_NAMES, node_args, True, False)
-    return None
 
 
 def run():
     """Run different methods for GH refresh job."""
     logger.info("-------------------------------------------------------------------------")
     logger.info("Starting GH refresh Cron Job on {}".format(datetime.today()))
-    init_celery()
-    init_selinon()
     epvs = get_epv_list()
     schedule_gh_refresh(epvs)
     logger.info("Finished GH refresh Cron Job on {}".format(datetime.today()))
