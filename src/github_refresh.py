@@ -113,7 +113,7 @@ def schedule_gh_refresh(epv_list):
         }
 
         # Update flow name and task names for Golang.
-        if eco is 'golang':
+        if eco == 'golang':
             payload["flow_name"] = "newPackageAnalysisFlow"
             payload["task_names"] = GO_TASK_NAMES
 
