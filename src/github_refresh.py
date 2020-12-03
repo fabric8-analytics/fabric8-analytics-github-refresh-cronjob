@@ -19,7 +19,7 @@ _TIME_DELTA = int(os.environ.get('REPORT_TIME_DELTA', 0))
 _DRY_RUN = int(os.environ.get('DRY_RUN', 0))
 _APP_SECRET_KEY = os.getenv('APP_SECRET_KEY', 'not-set')
 
-_INGESTION_API_URL = "http://{host}:{port}/{endpoint}".format(
+_SELECTIVE_INGESTION_API_URL = "http://{host}:{port}/{endpoint}".format(
     host=os.environ.get("INGESTION_SERVICE_HOST", "bayesian-jobs"),
     port=os.environ.get("INGESTION_SERVICE_PORT", "34000"),
     endpoint='ingestions/epv-selective')
@@ -121,7 +121,7 @@ def schedule_gh_refresh(epv_list):
             payload['packages'].append({'package': pkg})
 
         if not _DRY_RUN and payload['packages']:
-            _session.post(url=_INGESTION_API_URL,
+            _session.post(url=_SELECTIVE_INGESTION_API_URL,
                           json=payload,
                           headers={'auth_token': _APP_SECRET_KEY})
             logger.info("Flow is initiated for payload: {}".format(payload))
