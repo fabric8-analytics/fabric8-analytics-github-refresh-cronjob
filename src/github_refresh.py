@@ -108,7 +108,8 @@ def schedule_gh_refresh(epv_list):
             "packages": [],
             "flow_name": "bayesianPackageFlow",
             "task_names": TASK_NAMES,
-            "follow_subflows": True
+            "follow_subflows": True,
+            "source": "git-refresh"
         }
 
         # Update flow name and task names for Golang.
