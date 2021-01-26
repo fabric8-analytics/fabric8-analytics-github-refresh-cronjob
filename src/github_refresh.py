@@ -17,12 +17,11 @@ _PREFIX = os.environ.get('DEPLOYMENT_PREFIX', 'dev')
 _BUCKET = os.environ.get('REPORT_BUCKET_NAME', None)
 _TIME_DELTA = int(os.environ.get('REPORT_TIME_DELTA', 0))
 _DRY_RUN = int(os.environ.get('DRY_RUN', 0))
-_APP_SECRET_KEY = os.getenv('APP_SECRET_KEY', 'not-set')
 
 _SELECTIVE_INGESTION_API_URL = "http://{host}:{port}/{endpoint}".format(
     host=os.environ.get("INGESTION_SERVICE_HOST", "bayesian-jobs"),
     port=os.environ.get("INGESTION_SERVICE_PORT", "34000"),
-    endpoint='ingestions/epv-selective')
+    endpoint='internal/ingestions/epv-selective')
 
 TASK_NAMES = [
     'github_details',
@@ -114,7 +113,6 @@ def schedule_gh_refresh(epv_list):
 
         # Update flow name and task names for Golang.
         if eco == 'golang':
-            payload["flow_name"] = "newPackageAnalysisFlow"
             payload["task_names"] = GO_TASK_NAMES
 
         for pkg in epv_list[eco]:
@@ -122,8 +120,7 @@ def schedule_gh_refresh(epv_list):
 
         if not _DRY_RUN and payload['packages']:
             _session.post(url=_SELECTIVE_INGESTION_API_URL,
-                          json=payload,
-                          headers={'auth_token': _APP_SECRET_KEY})
+                          json=payload)
             logger.info("Flow is initiated for payload: {}".format(payload))
         else:
             logger.info("DRY RUN MODE ON..Flow not initiated.")
