@@ -1,3 +1,6 @@
+![CI](https://github.com/fabric8-analytics/fabric8-analytics-github-refresh-cornjob/workflows/CI/badge.svg?branch=master)
+[![codecov](https://codecov.io/gh/fabric8-analytics/fabric8-analytics-github-refresh-cornjob/branch/master/graph/badge.svg?token=qi833miGbI)](https://codecov.io/gh/fabric8-analytics/fabric8-analytics-github-refresh-cornjob)
+
 # GitHub refresh cronjob
 
 OpenShift cron job for refreshing GitHub data of ingested packages.

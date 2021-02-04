@@ -42,8 +42,7 @@ check_python_version
 
 $(which pip3) install pytest-cov
 
-PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=$(pwd) python3 "$(which pytest)" --cov=./src --cov-config .coveragerc --cov-report term-missing --cov-fail-under=$COVERAGE_THRESHOLD -vv tests/
-codecov --token=c7d85992-337d-48b1-abb4-e55429b3e9c9
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=$(pwd) python3 "$(which pytest)" --cov=./src --cov-config .coveragerc --cov-report=xml --cov-fail-under=$COVERAGE_THRESHOLD -vv tests/
 printf "%stests passed%s\n\n" "${GREEN}" "${NORMAL}"
 
 popd > /dev/null
