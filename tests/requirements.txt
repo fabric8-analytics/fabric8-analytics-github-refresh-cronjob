@@ -4,23 +4,41 @@
 #
 #    pip-compile
 #
-attrs==20.3.0             # via pytest
-certifi==2020.11.8        # via requests
-chardet==3.0.4            # via requests
-codecov==2.1.10           # via -r requirements.in
-coverage==5.3             # via codecov
-idna==2.10                # via requests
-importlib-metadata==3.1.1  # via pluggy, pytest
-iniconfig==1.1.1          # via pytest
-packaging==20.7           # via pytest
-pluggy==0.13.1            # via pytest
-py==1.9.0                 # via pytest
-pydocstyle==5.1.1         # via -r requirements.in
-pyparsing==2.4.7          # via packaging
-pytest-mock==3.3.1        # via -r requirements.in
-pytest==6.1.2             # via -r requirements.in, pytest-mock
-requests==2.25.0          # via codecov
-snowballstemmer==2.0.0    # via pydocstyle
-toml==0.10.2              # via pytest
-urllib3==1.26.2           # via requests
-zipp==3.4.0               # via importlib-metadata
+attrs==20.3.0
+    # via pytest
+certifi==2020.11.8
+    # via requests
+chardet==3.0.4
+    # via requests
+codecov==2.1.10
+    # via -r requirements.in
+coverage==5.3
+    # via codecov
+idna==2.10
+    # via requests
+iniconfig==1.1.1
+    # via pytest
+packaging==20.7
+    # via pytest
+pluggy==0.13.1
+    # via pytest
+py==1.9.0
+    # via pytest
+pydocstyle==5.1.1
+    # via -r requirements.in
+pyparsing==2.4.7
+    # via packaging
+pytest-mock==3.3.1
+    # via -r requirements.in
+pytest==6.1.2
+    # via
+    #   -r requirements.in
+    #   pytest-mock
+requests==2.25.0
+    # via codecov
+snowballstemmer==2.0.0
+    # via pydocstyle
+toml==0.10.2
+    # via pytest
+urllib3==1.26.4
+    # via requests
