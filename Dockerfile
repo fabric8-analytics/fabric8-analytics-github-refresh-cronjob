@@ -1,4 +1,4 @@
-FROM registry.centos.org/centos/centos:7
+FROM registry.access.redhat.com/ubi8/python-36:latest
 
 RUN yum install -y epel-release &&\
     yum install -y git python36-pip python36-devel &&\
