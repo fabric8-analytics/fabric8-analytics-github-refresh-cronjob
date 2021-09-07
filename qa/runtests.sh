@@ -16,8 +16,7 @@ check_python_version() {
 
 echo "Create Virtualenv for Python deps ..."
 function prepare_venv() {
-        python3 -m pip install --user virtualenv
-        python3 -m venv venv
+    
         VIRTUALENV=$(which virtualenv)
         if [ $? -eq 1 ]
         then
