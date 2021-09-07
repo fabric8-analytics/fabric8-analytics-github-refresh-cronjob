@@ -11,17 +11,13 @@ certifi==2020.11.8
 chardet==3.0.4
     # via requests
 codecov==2.1.10
-    # via -r requirements.in
+    # via -r tests/requirements.in
 coverage==5.3
     # via
     #   codecov
     #   pytest-cov
 idna==2.10
     # via requests
-importlib-metadata==3.1.1
-    # via
-    #   pluggy
-    #   pytest
 iniconfig==1.1.1
     # via pytest
 packaging==20.7
@@ -31,18 +27,18 @@ pluggy==0.13.1
 py==1.9.0
     # via pytest
 pydocstyle==5.1.1
-    # via -r requirements.in
+    # via -r tests/requirements.in
 pyparsing==2.4.7
     # via packaging
 pytest==6.1.2
     # via
-    #   -r requirements.in
+    #   -r tests/requirements.in
     #   pytest-cov
     #   pytest-mock
 pytest-cov==2.12.1
-    # via -r requirements.in
+    # via -r tests/requirements.in
 pytest-mock==3.3.1
-    # via -r requirements.in
+    # via -r tests/requirements.in
 requests==2.25.0
     # via codecov
 snowballstemmer==2.0.0
@@ -51,7 +47,5 @@ toml==0.10.2
     # via
     #   pytest
     #   pytest-cov
-urllib3==1.26.2
+urllib3==1.26.5
     # via requests
-zipp==3.4.0
-    # via importlib-metadata
