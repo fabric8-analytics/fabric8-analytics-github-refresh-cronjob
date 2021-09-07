@@ -2,3 +2,4 @@ pytest
 codecov
 pytest-mock
 pydocstyle
+pytest-cov

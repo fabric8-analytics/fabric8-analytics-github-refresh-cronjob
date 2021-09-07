@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -xv
 
 SCRIPT_DIR="$( cd "$( dirname "$0" )" && pwd )"
 
@@ -16,18 +16,21 @@ check_python_version() {
 
 echo "Create Virtualenv for Python deps ..."
 function prepare_venv() {
+        python3 -m pip install --user virtualenv
+        python3 -m venv venv
         VIRTUALENV=$(which virtualenv)
         if [ $? -eq 1 ]
         then
-            # python36 which is in CentOS does not have virtualenv binary
-            VIRTUALENV=$(which virtualenv-3)
+        python36 which is in CentOS does not have virtualenv binary
+        VIRTUALENV=$(which virtualenv-3)
         fi
 
-        ${VIRTUALENV} -p python3 venv && source venv/bin/activate
+        ${VIRTUALENV} -p python3 venv && 
+        source venv/bin/activate
         if [ $? -ne 0 ]
         then
-            printf "%sPython virtual environment can't be initialized%s" "${RED}" "${NORMAL}"
-            exit 1
+        printf "%sPython virtual environment can't be initialized%s" "${RED}" "${NORMAL}"
+        exit 1
         fi
 
         printf "%sOK%s\n" "${GREEN}" "${NORMAL}" >&2
@@ -40,7 +43,7 @@ function prepare_venv() {
 
 check_python_version
 
-$(which pip3) install pytest-cov
+$(which pip3) install pytest --cov
 
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=$(pwd) python3 "$(which pytest)" --cov=./src --cov-config .coveragerc --cov-report=xml --cov-fail-under=$COVERAGE_THRESHOLD -vv tests/
 printf "%stests passed%s\n\n" "${GREEN}" "${NORMAL}"
