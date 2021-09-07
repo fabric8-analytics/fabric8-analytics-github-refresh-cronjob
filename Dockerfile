@@ -1,8 +1,10 @@
-FROM registry.centos.org/centos/centos:7
+FROM registry.access.redhat.com/ubi8/ubi-minimal:latest
 
-RUN yum install -y epel-release &&\
-    yum install -y git python36-pip python36-devel &&\
-    yum clean all
+RUN microdnf update -y && rm -rf /var/cache/yum
+RUN microdnf install python3 git && microdnf clean all
+RUN microdnf install which  
+RUN pip3 install --upgrade pip --no-cache-dir
+
 
 ENV APP_DIR=/github_refresh
 
