@@ -14,4 +14,4 @@ WORKDIR ${APP_DIR}
 COPY . ${APP_DIR}
 RUN python3 -m pip install --upgrade pip>=10.0.0 && pip3 install -r requirements.txt
 
-CMD ["./qa/runtests.sh"]
+CMD ["python3", "-u", "./src/github_refresh.py"]
