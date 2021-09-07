@@ -65,6 +65,7 @@ def retrieve_blob(object_key):
         return None
     return data
 
+
 def get_epv_list():
     """Fetch the epvs from the daily stack report."""
     epv_list = {
