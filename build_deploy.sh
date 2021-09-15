@@ -1,7 +1,7 @@
 #!/bin/bash
 set -exv
 
-BASE_IMG="fabric8-analytics-fabric8-github-refresh-cronjob"
+BASE_IMG="fabric8-analytics-github-refresh-cronjob"
 QUAY_IMAGE="quay.io/app-sre/${BASE_IMG}"
 IMG="${BASE_IMG}:latest"
 
