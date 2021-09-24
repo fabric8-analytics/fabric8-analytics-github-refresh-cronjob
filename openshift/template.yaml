@@ -145,8 +145,15 @@ parameters:
   name: MEMORY_REQUEST
   value: "256Mi"
 
+- description: Memory limit
+  displayName: Memory limit
+  required: true
+  name: MEMORY_LIMIT
+  value: "1536Mi"
+
 - description: REPORT TIME DELTA
   displayName: REPORT TIME DELTA
   required: false
   name: REPORT_TIME_DELTA
   value: "0"
+
