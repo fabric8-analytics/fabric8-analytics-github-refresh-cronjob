@@ -57,7 +57,7 @@ objects:
                 - name: DRY_RUN
                   value: "${DRY_RUN}"
                 - name: REPORT_TIME_DELTA
-                  value: "0"
+                  value: ${REPORT_TIME_DELTA}
                 - name: PGBOUNCER_SERVICE_HOST
                   value: bayesian-pgbouncer
                 - name: PGBOUNCER_SERVICE_PORT
@@ -145,8 +145,8 @@ parameters:
   name: MEMORY_REQUEST
   value: "256Mi"
 
-- description: Memory limit
-  displayName: Memory limit
-  required: true
-  name: MEMORY_LIMIT
-  value: "1536Mi"
+- description: REPORT TIME DELTA
+  displayName: REPORT TIME DELTA
+  required: false
+  name: REPORT_TIME_DELTA
+  value: "0"
