@@ -6,7 +6,7 @@
 #
 attrs==20.3.0
     # via pytest
-certifi==2020.11.8
+certifi==2022.12.7
     # via requests
 chardet==3.0.4
     # via requests
@@ -18,10 +18,6 @@ coverage==5.3
     #   pytest-cov
 idna==2.10
     # via requests
-importlib-metadata==3.1.1
-    # via
-    #   pluggy
-    #   pytest
 iniconfig==1.1.1
     # via pytest
 packaging==20.7
@@ -53,5 +49,3 @@ toml==0.10.2
     #   pytest-cov
 urllib3==1.26.2
     # via requests
-zipp==3.4.0
-    # via importlib-metadata
